@@ -1,40 +1,46 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import type { PageData } from './$types';
 
-  import type { BulkDataIngestionRequest } from '$lib/ProjectTypes';
-  import { DocumentIngestion } from '$lib/DocumentIngestionService';
+  import { UserIngestion } from '$lib/UserIngestionService';
 
-	export let data: PageData;
-
-	let isLoading = false;
+  let expectedCreateBulkUser = [
+    '[',
+    '\t{',
+    '\t\t"$id": [Generated]',
+    '\t\t"name": [User XXX]',
+    '\t\t"email": [userxxx@xyz.com]',
+    '\t\t"phone": ""',
+    '\t}',
+    ']'
+  ];
+  let isLoading = false;
 
 	let modalMessage = '';
 	let modalType = '';
 	const dialog: any = browser ? document.getElementById('dialog') : null;
 
-  async function createDocuments(documents: any) {
+  async function createUsers(event: Event) {
 
     const dialog: any = browser ? document.getElementById('dialog') : null;
     isLoading = true;
 		try {
-			const formData = new FormData(documents.target);
-      let bulkJsonValue;
+      const formEl = event.target as HTMLFormElement
+			const formData = new FormData(formEl);
+      let bulkUserCount: number = 0;
       for (let field of formData) {
-        const [key, stringValue] = field;
-        bulkJsonValue = JSON.parse(stringValue);
+        const [key, strValue] = field;
+        bulkUserCount = parseInt(strValue);
       }
-      const bulkData: BulkDataIngestionRequest = {
-        collectionId: data.collectionId,
-        databaseId: data.databaseId,
-        bulkData: bulkJsonValue
-      };
-      console.log(bulkData);
-      await DocumentIngestion.ingestDocument(bulkData);
+      // const bulkData: BulkDataIngestionRequest = {
+      //   collectionId: data.collectionId,
+      //   databaseId: data.databaseId,
+      //   bulkData: bulkJsonValue
+      // };
+      await UserIngestion.ingestUsers(bulkUserCount);
 
 			modalType = 'success';
 			modalMessage =
-				'Successfully created Documents in Bulk'
+				'Successfully created all the users'
 			dialog.showModal();
 		} catch (err: any) {
 			modalType = 'error';
@@ -52,21 +58,23 @@
 
 	<div class="container">
     
-    <h3 class="heading-level-3">File structure should be following</h3>
+    <h3 class="heading-level-3">Generate new Users</h3>
     <section class="u-min-width-100-percent">
       <code class="code-panel-content grid-code">
-        {#each data.attributeFormat as attributeFomat}
+        {#each expectedCreateBulkUser as expectedCreateUser}
           <div class="grid-code-line-number"></div>
-          <pre>{attributeFomat}</pre>
+          <pre>{expectedCreateUser}</pre>
         {/each}
       </code>
     </section>
     
-    <form class="form u-width-full-line u-min-width-100-percent" on:submit|preventDefault={createDocuments}>
+    <form class="form u-width-full-line u-min-width-100-percent" on:submit|preventDefault={createUsers}>
       <ul class="form-list">
         <li class="form-item">
-          <label class="documents eyebrow-heading-1">Documents</label>
-          <textarea name="bulkData" class="input-text" placeholder="Type here..."></textarea>
+          <label class="documents eyebrow-heading-1">Number of Users to Generate</label>
+          <div class="input-text-wrapper">
+            <input type="number" name="bulkUserCount" class="input-text" placeholder="Enter number of users as Integer" />
+          </div>
         </li>
       </ul>
       <button class="button" type="submit">
@@ -100,7 +108,7 @@
                   modalMessage = '';
                   modalType = '';
                   dialog.close();
-                  location.href = `/database/${data.databaseId}/collection/${data.collectionId}/`;
+                  location.href = `/user/`;
                 }}
                 class="button is-secondary"
               >

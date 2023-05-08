@@ -23,6 +23,11 @@
 			isMenuOpened = !isMenuOpened;
 		}
 	}
+
+	function updateNavSelect() {
+		const listOfNavs = document.body.getElementsByClassName("navLink");
+		console.log("List of Nav are", listOfNavs);
+	}
 </script>
 
 <div class="grid-with-side">
@@ -74,18 +79,18 @@
 			<div class="side-nav-main">
 				<section class="drop-section">
 					<ul class="drop-list">
-						<li class="drop-list-item">
-							<a class="drop-button u-cross-center is-selected" href="/">
+						<li class="drop-list-item" on:click={updateNavSelect}>
+							<a class="drop-button u-cross-center navLink is-selected" href="/">
 								<span class="text">Project</span>
 							</a>
 						</li>
-						<li class="drop-list-item">
-							<a class="drop-button u-cross-center" href="/database">
+						<li class="drop-list-item" on:click={updateNavSelect}>
+							<a class="drop-button u-cross-center navLink" href="/database">
 								<span class="text">Database</span>
 							</a>
 						</li>
-						<li class="drop-list-item">
-							<a class="drop-button u-cross-center" href="/">
+						<li class="drop-list-item" on:click={updateNavSelect}>
+							<a class="drop-button u-cross-center navLink" href="/user">
 								<span class="text">Users</span>
 							</a>
 						</li>

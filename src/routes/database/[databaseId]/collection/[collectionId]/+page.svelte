@@ -25,6 +25,7 @@
           databaseId: data.databaseId,
           collectionId: data.collectionId
         });
+        element.checked = false;
       }
     }
     await deleteDocuments(documentsToDelete);
@@ -57,7 +58,7 @@
       }
 			modalType = 'success';
 			modalMessage =
-				'Session created! Refresh page to run SSR check, or re-fetch to run CSR cehck.';
+				'Successfully deleted selected documents';
 			dialog.showModal();
 		} catch (err: any) {
 			modalType = 'error';

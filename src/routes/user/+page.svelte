@@ -22,6 +22,7 @@
         usersToDelete.push({
           userId: element.id
         });
+        element.checked = false;
       }
     }
     await deleteUsers(usersToDelete);
@@ -52,7 +53,7 @@
       }
 			modalType = 'success';
 			modalMessage =
-				'All users Deleted Successfully.';
+				'Successfully Deleted all the selected Users';
 			dialog.showModal();
 		} catch (err: any) {
 			modalType = 'error';
@@ -77,7 +78,7 @@
       <button class="button is-big u-margin-inline-start-16">
         <span class="icon-trash" aria-hidden="true"></span>
         <span class="text" on:click={() => 
-        location.href = `/users/new`}>
+        location.href = `/user/new`}>
           Bulk Create Users</span>
       </button>
   </div>
@@ -104,7 +105,7 @@
                 <span class="eyebrow-heading-3">Phone</span>
               </th>
               <th class="table-thead-col" style="--p-col-width:180">
-                <span class="eyebrow-heading-3">Verification Status</span>
+                <span class="eyebrow-heading-3">Active Status</span>
               </th>
             </tr>
           </thead>
