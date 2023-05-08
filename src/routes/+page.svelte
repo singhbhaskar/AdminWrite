@@ -46,7 +46,7 @@
         <div class="grid-item-1-end-start">
           <div class="u-flex u-gap-16 u-flex-wrap">
             <div class="tag">
-              <a class="text" href="/">Go to Users</a>
+              <a class="text" href="/user">Go to Users</a>
             </div>
           </div>
         </div>

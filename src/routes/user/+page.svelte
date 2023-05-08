@@ -2,7 +2,6 @@
 	import { browser } from '$app/environment';
 
 	import type { PageData } from './$types';
-  import type { DatabaseCollection } from '$lib/ProjectTypes';
 	import { invalidate } from '$app/navigation';
 	// import { AppwriteService } from '$lib/AppwriteService';
 
@@ -14,50 +13,46 @@
 	let modalType = '';
 	const dialog: any = browser ? document.getElementById('dialog') : null;
 
-  async function deleteSelectedDocuments() {
-		const selectedDocuments = document.body.getElementsByClassName("document-check");
-    let documentsToDelete: DatabaseCollection[] = [];
-     for (let index = 0; index < selectedDocuments.length; index++) {
-      const element = selectedDocuments[index];
+  async function deleteSelectedUsers() {
+		const selectedUsers = document.body.getElementsByClassName("user-check");
+    let usersToDelete = [];
+     for (let index = 0; index < selectedUsers.length; index++) {
+      const element = selectedUsers[index];
       if(element.checked) {
-        documentsToDelete.push({
-          documentId: element.id,
-          databaseId: data.databaseId,
-          collectionId: data.collectionId
+        usersToDelete.push({
+          userId: element.id
         });
       }
     }
-    await deleteDocuments(documentsToDelete);
+    await deleteUsers(usersToDelete);
 	}
 
-  async function deleteAllDocuments() {
-		const selectedDocuments = document.body.getElementsByClassName("document-check");
-    let documentsToDelete: DatabaseCollection[] = [];
-     for (let index = 0; index < selectedDocuments.length; index++) {
-      const element = selectedDocuments[index];
-      documentsToDelete.push({
-        documentId: element.id,
-        databaseId: data.databaseId,
-        collectionId: data.collectionId
+  async function deleteAllUsers() {
+		const selectedUsers = document.body.getElementsByClassName("user-check");
+    let usersToDelete = [];
+     for (let index = 0; index < selectedUsers.length; index++) {
+      const element = selectedUsers[index];
+      usersToDelete.push({
+        userId: element.id
       });
     }
-    await deleteDocuments(documentsToDelete);
+    await deleteUsers(usersToDelete);
 	}
 
-  async function deleteDocuments(collections: DatabaseCollection[]) {
+  async function deleteUsers(usersToDelete: any[]) {
     const dialog: any = browser ? document.getElementById('dialog') : null;
     isLoading = true;
 		try {
-			const res = await fetch(`/database/${data.databaseId}/collection/delete`, {
+			const res = await fetch(`/user/delete`, {
 				method: 'POST',
-				body: JSON.stringify(collections)
+				body: JSON.stringify(usersToDelete)
 			});
       if (res.status != 200) {
-        throw new Error("Problem occurred deleting the collections");
+        throw new Error("Problem occurred deleting the users");
       }
 			modalType = 'success';
 			modalMessage =
-				'Session created! Refresh page to run SSR check, or re-fetch to run CSR cehck.';
+				'All users Deleted Successfully.';
 			dialog.showModal();
 		} catch (err: any) {
 			modalType = 'error';
@@ -73,23 +68,21 @@
   <div class="u-flex u-min-width-100-percent box">
       <button class="button is-big u-margin-inline-start-16">
         <span class="icon-trash" aria-hidden="true"></span>
-        <span class="text" on:click={deleteSelectedDocuments}>Delete Selected</span>
+        <span class="text" on:click={deleteSelectedUsers}>Delete Users</span>
       </button>
       <button class="button is-big u-margin-inline-start-16">
         <span class="icon-trash" aria-hidden="true"></span>
-        <span class="text" on:click={deleteAllDocuments}>Delete All Documents</span>
+        <span class="text" on:click={deleteAllUsers}>Delete All Users</span>
       </button>
-      <!-- <a href="/"> -->
-        <button class="button is-big u-margin-inline-start-16">
-          <span class="icon-trash" aria-hidden="true"></span>
-          <span class="text" on:click={() => 
-          location.href = `/database/${data.databaseId}/collection/${data.collectionId}/new`}>
-            Bulk Create Documents</span>
-        </button>
-      <!-- </a> -->
+      <button class="button is-big u-margin-inline-start-16">
+        <span class="icon-trash" aria-hidden="true"></span>
+        <span class="text" on:click={() => 
+        location.href = `/users/new`}>
+          Bulk Create Users</span>
+      </button>
   </div>
 	<div class="container">
-    {#if data.documents.length > 0}
+    {#if data.users.length > 0}
     <div class="table-with-scroll">
       <div class="table-wrapper">
         <table class="table is-sticky-scroll">
@@ -99,32 +92,43 @@
                 <span class="eyebrow-heading-3">Checkbox</span>
               </th>
               <th class="table-thead-col" style="--p-col-width:180">
-                <span class="eyebrow-heading-3">Document ID</span>
+                <span class="eyebrow-heading-3">User ID</span>
               </th>
-              {#each data.attributes as attribute}
-              <th class="table-thead-col" style="--p-col-width:155">
-                <span class="eyebrow-heading-3">{attribute.key}</span>
+              <th class="table-thead-col" style="--p-col-width:180">
+                <span class="eyebrow-heading-3">Name</span>
               </th>
-              {/each}
+              <th class="table-thead-col" style="--p-col-width:180">
+                <span class="eyebrow-heading-3">Email</span>
+              </th>
+              <th class="table-thead-col" style="--p-col-width:180">
+                <span class="eyebrow-heading-3">Phone</span>
+              </th>
+              <th class="table-thead-col" style="--p-col-width:180">
+                <span class="eyebrow-heading-3">Verification Status</span>
+              </th>
             </tr>
           </thead>
           <tbody class="table-tbody">
-            {#each data.documents as document}
+            {#each data.users as user}
               <tr class="table-row">
-                <td class="table-col" data-title="Document ID">
-                  <input class="document-check" id="{document.$id}" type="checkbox" />
+                <td class="table-col" data-title="User-checkbox">
+                  <input class="user-check" id="{user.$id}" type="checkbox" />
                 </td>
-                <td class="table-col" data-title="Document ID">
-                  <button class="tag">
-                    <span class="icon-duplicate" aria-hidden="true"></span>
-                    <span class="text">{document.$id}</span>
-                  </button>
+                <td class="table-col" data-title="userId">
+                  <span class="text">{user.$id}</span>
                 </td>
-                {#each data.attributes as attribute}
-                    <td class="table-col" data-title="{attribute.key}">
-                      <span class="text">{document[attribute.key]}</span>
-                    </td>
-                {/each}
+                <td class="table-col" data-title="name">
+                    <span class="text">{user.name}</span>
+                </td>
+                <td class="table-col" data-title="email">
+                    <span class="text">{user.email}</span>
+                </td>
+                <td class="table-col" data-title="phone">
+                    <span class="text">{user.phone != ''? user.phone: 'N/A'}</span>
+                </td>
+                <td class="table-col" data-title="verified">
+                    <span class="text">{user.status}</span>
+                </td>
               </tr>
             {/each}
           </tbody>
@@ -142,8 +146,8 @@
       </button>
       <div class="alert-sticky-image"><span class="icon-info" aria-hidden="true"></span></div>
       <div class="alert-sticky-content">
-        <h4 class="alert-sticky-title">No Documents Found</h4>
-        <p>Create a new Documents in appwrite console and reload this page.</p>
+        <h4 class="alert-sticky-title">No Users Found</h4>
+        <p>Create a new Users in appwrite console and reload this page.</p>
       </div>
     </section>
 
@@ -174,8 +178,8 @@
               on:click={() => {
                 modalMessage = '';
                 modalType = '';
+                invalidate("users");
                 dialog.close();
-                invalidate("documents");
               }}
               class="button is-secondary"
             >
