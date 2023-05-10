@@ -49,10 +49,23 @@ AdminWrite is a helper for Appwrite to perform bulk operations during developmen
 * [SvelteKit Appwrite Starter](https://github.com/Meldiron/appwrite-ssr-svelte-kit/tree/main)
 
 ## 🖼️ Screenshots
+*AdminWrite Home*
+![AdminWriteHome](docs/AdminWriteHome.png)
+*AdminWrite Database*
+![AdminWriteDatabase](docs/AdminWriteDatabase.png)
+*AdminWrite Document View*
+![AdminWriteDocumentView](docs/AdminWriteDocumentView.png)
+*AdminWrite Delete Document*
+![AdminWriteDeleteDocument](docs/AdminWriteDeleteDocument.png)
+*AdminWrite Bulk Document Create*
+![AdminWriteBulkDocumentCreate](docs/AdminWriteBulkDocumentCreate.png)
+*AdminWrite Users View*
+![AdminWriteUserView](docs/AdminWriteUserView.png)
+*AdminWrite Users Delete*
+![AdminWriteUserDelete](docs/AdminWriteUserDelete.png)
+*AdminWrite Bulk User Create*
+![AdminWriteUserBulkCreate](docs/AdminWriteUserBulkCreate.png)
 
-![Screenshot](docs/screenshot1.png)
-![Screenshot](docs/screenshot2.png)
-![Screenshot](docs/screenshot3.png)
 
 ## 🤖 Auto-generated documentation
 
