@@ -101,7 +101,7 @@
   </div>
 	<div class="container">
     {#if data.documents.length > 0}
-    <h5 class="eyebrow-heading-2">Total collections are: {data.totalDocuments}</h5>
+    <h5 class="eyebrow-heading-2">Total Documents are: {data.totalDocuments}</h5>
     <div class="table-with-scroll">
       <div class="table-wrapper">
         <table class="table is-sticky-scroll">
