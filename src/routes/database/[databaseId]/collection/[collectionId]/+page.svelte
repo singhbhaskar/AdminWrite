@@ -80,17 +80,16 @@
         <span class="icon-trash" aria-hidden="true"></span>
         <span class="text" on:click={deleteAllDocuments}>Delete All Documents</span>
       </button>
-      <!-- <a href="/"> -->
         <button class="button is-big u-margin-inline-start-16">
           <span class="icon-trash" aria-hidden="true"></span>
           <span class="text" on:click={() => 
           location.href = `/database/${data.databaseId}/collection/${data.collectionId}/new`}>
             Bulk Create Documents</span>
         </button>
-      <!-- </a> -->
   </div>
 	<div class="container">
     {#if data.documents.length > 0}
+    <h5 class="eyebrow-heading-2">Total collections are: {data.totalDocuments}</h5>
     <div class="table-with-scroll">
       <div class="table-wrapper">
         <table class="table is-sticky-scroll">
@@ -156,7 +155,9 @@
     <dialog class="modal is-small" id="dialog">
       <form class="modal-form" method="dialog">
         <header class="modal-header u-flex u-gap-12 u-cross-center" style="flex-direction: row;">
-          {#if modalType === 'error'}
+          {#if isLoading == true && modalType === ''}
+            <div class="loader"></div>
+          {:else if modalType === 'error'}
             <div class="avatar is-color-orange is-medium">
               <span class="icon-exclamation" aria-hidden="true" />
             </div>
@@ -175,8 +176,8 @@
               on:click={() => {
                 modalMessage = '';
                 modalType = '';
+                invalidate("all-documents");
                 dialog.close();
-                invalidate("documents");
               }}
               class="button is-secondary"
             >

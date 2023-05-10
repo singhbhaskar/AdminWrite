@@ -9,7 +9,7 @@ export const load = (async ({ params, depends }) => {
 	let attributeFormat = ['[\n\t{'];
 	attributes.attributes.forEach((attr) => {
 		attributeFormat.push(
-			attr.array? '\t\t'+`"${attr.key}": [${attr.type}]`:'\t\t'+`"${attr.key}": ${attr.type}`
+			attr.array? '\t\t'+`"${attr.key}": [${attr.type}],`:'\t\t'+`"${attr.key}": ${attr.type},`
 		);
 	})
 	attributeFormat.push('\t}\n]')

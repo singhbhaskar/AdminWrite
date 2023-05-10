@@ -11,7 +11,22 @@
 
 	let modalMessage = '';
 	let modalType = '';
+
+  let clipboardModalMessage = '';
+  let clipboardMmodalType = '';
+
 	const dialog: any = browser ? document.getElementById('dialog') : null;
+  const clipboardModal: any = browser ? document.getElementById('clipboard-modal') : null;
+
+  async function copyAttributeFormatToClipboard() {
+    const clipBoard = navigator.clipboard;
+    clipBoard.writeText(data.attributeFormat.join('\n')).then(() => {
+      const clipboardModal: any = browser ? document.getElementById('clipboard-modal') : null;
+      clipboardMmodalType = 'success';
+			clipboardModalMessage ='Successfully Copied Collection Format';
+        clipboardModal.showModal();
+    });
+  }
 
   async function createDocuments(documents: any) {
 
@@ -61,6 +76,13 @@
         {/each}
       </code>
     </section>
+
+    <br>
+    <button class="button is-secondary" aria-label="Add new item" on:click={copyAttributeFormatToClipboard}>
+      <span class="icon-duplicate" aria-hidden="true"></span>
+      <span class="text">Copy Collection Format</span>
+    </button>
+    <br>
     
     <form class="form u-width-full-line u-min-width-100-percent" on:submit|preventDefault={createDocuments}>
       <ul class="form-list">
@@ -69,6 +91,7 @@
           <textarea name="bulkData" class="input-text" placeholder="Type here..."></textarea>
         </li>
       </ul>
+      <br>
       <button class="button" type="submit">
         <span class="icon-plus" aria-hidden="true"></span>
         <span class="text">Submit</span>
@@ -112,4 +135,38 @@
       </dialog>
     </div>
 
+    <div>
+      <dialog class="modal is-small" id="clipboard-modal">
+        <form class="modal-form" method="dialog">
+          <header class="modal-header u-flex u-gap-12 u-cross-center" style="flex-direction: row;">
+            {#if clipboardMmodalType === 'error'}
+              <div class="avatar is-color-orange is-medium">
+                <span class="icon-exclamation" aria-hidden="true" />
+              </div>
+              <h4 class="modal-title heading-level-5">Error 🚨</h4>
+            {:else}
+              <div class="avatar is-color-green is-medium">
+                <span class="icon-check" aria-hidden="true" />
+              </div>
+              <h4 class="modal-title heading-level-5">Success 🎉</h4>
+            {/if}
+          </header>
+          <div class="modal-content u-small">{clipboardModalMessage}</div>
+          <div class="modal-footer">
+            <div class="u-flex u-main-end u-gap-16">
+              <button
+                on:click={() => {
+                  clipboardModalMessage = '';
+                  clipboardMmodalType = '';
+                  clipboardModal.close();
+                }}
+                class="button is-secondary"
+              >
+                <span class="text">Close</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </dialog>
+    </div>
 </main>

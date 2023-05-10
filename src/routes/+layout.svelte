@@ -2,9 +2,18 @@
 	import '../app.css';
 	import '@appwrite.io/pink';
 	import '@appwrite.io/pink-icons';
+	import { onMount } from 'svelte';
 
 	let isDark = true;
 	let isMenuOpened: null | boolean = null;
+
+	onMount(() => {
+		const navs = Array.from(document.body.querySelectorAll(".navLink"));
+		navs.forEach((nav) => {
+			nav.classList.remove("is-selected");
+		});
+		const databaseNav = Array.from(document.body.querySelectorAll("#nav-project"))[0].classList.add("is-selected");
+  	});
 
 	function toggleTheme() {
 		if (isDark) {
@@ -24,10 +33,6 @@
 		}
 	}
 
-	function updateNavSelect() {
-		const listOfNavs = document.body.getElementsByClassName("navLink");
-		console.log("List of Nav are", listOfNavs);
-	}
 </script>
 
 <div class="grid-with-side">
@@ -79,18 +84,18 @@
 			<div class="side-nav-main">
 				<section class="drop-section">
 					<ul class="drop-list">
-						<li class="drop-list-item" on:click={updateNavSelect}>
-							<a class="drop-button u-cross-center navLink is-selected" href="/">
+						<li class="drop-list-item">
+							<a class="drop-button u-cross-center navLink is-selected" id="nav-project" href="/">
 								<span class="text">Project</span>
 							</a>
 						</li>
-						<li class="drop-list-item" on:click={updateNavSelect}>
-							<a class="drop-button u-cross-center navLink" href="/database">
+						<li class="drop-list-item">
+							<a class="drop-button u-cross-center navLink" id="nav-database" href="/database">
 								<span class="text">Database</span>
 							</a>
 						</li>
-						<li class="drop-list-item" on:click={updateNavSelect}>
-							<a class="drop-button u-cross-center navLink" href="/user">
+						<li class="drop-list-item">
+							<a class="drop-button u-cross-center navLink" id="nav-user" href="/user">
 								<span class="text">Users</span>
 							</a>
 						</li>

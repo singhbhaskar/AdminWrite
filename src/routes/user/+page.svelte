@@ -84,6 +84,7 @@
   </div>
 	<div class="container">
     {#if data.users.length > 0}
+    <h5 class="eyebrow-heading-2">Total collections are: {data.totalUser}</h5>
     <div class="table-with-scroll">
       <div class="table-wrapper">
         <table class="table is-sticky-scroll">
@@ -160,7 +161,9 @@
     <dialog class="modal is-small" id="dialog">
       <form class="modal-form" method="dialog">
         <header class="modal-header u-flex u-gap-12 u-cross-center" style="flex-direction: row;">
-          {#if modalType === 'error'}
+          {#if isLoading == true && modalType === ''}
+            <div class="loader"></div>
+          {:else if modalType === 'error'}
             <div class="avatar is-color-orange is-medium">
               <span class="icon-exclamation" aria-hidden="true" />
             </div>
