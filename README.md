@@ -1,21 +1,16 @@
-![Almost Cover](static/cover.png)
 
-# Almost SSR - Svelte Kit
+# AdminWrite
+![AdminWrite Logo](static/logo.svg)
+## 📝 What is AdminWrite?
 
-> Demo application with authorized server-side and client-side rendering.
+AdminWrite is a helper for Appwrite to perform bulk operations during development. Currently Database and Uses are supported with the following operations:
+* Select Deleted (100 in 1 request)
+* Delete All (100 in 1 request)
+* Bulk Create
 
-## 💭 So How Does It Work?
-
-Appwrite uses 1st party secure cookies for authorization. For legacy reasons, there are two such cookies. They are both very similar, but one's name ends with `_legacy` and is configured a tiny bit differently. It's also possible to use a fallback cookie, but that is not secure for production, and we will not be using that.
-
-To ensure server-side rendering works, we need to set those cookies on our SSR server hostname instead of the Appwrite hostname. Let's say our Appwrite instance is on `cloud.appwrite.io`, and our app is on `myapp.com`. SSR server on domain `myapp.com` won't receive `appwrite.io` cookies. This is expected behavior, as browsers keep 1st party cookies securely scoped to specific domains.
-
-To set those cookies on the SSR server, we need a special API endpoint in our SSR server. This endpoint will send a request to create a session, proxying email/password or other credentials. This endpoint next parses the response `set-cookie` header, replaces domain configuration on the cookies, and set's it's own `set-cookie` on the response to the client.
-
-When a client calls this endpoint, the cookie will now be set on the SSR server hostname instead of the Appwrite hostname.
-
-This makes server-side rendering work, but now client-side rendering is broken. Since `set-cookie` coming to the browser only includes a cookie for the SSR server, talking to the Appwrite server directly won't have a proper cookie - there is no auth cookie on the Appwrite hostname. To overcome this problem, we ensure the Appwrite hostname is a subdomain of the SSR hostname. For example, if our SSR server runs on `myapp.com`, Appwrite needs a custom domain configured on `appwrite.myapp.com`. With this setup, all requests to the Appwrite server will include auth cookies, and the user will be properly authorized. This is possible thanks to Appwrite prefixing the cookie domain with `.`, meaning all subdomains can also access the cookie.
-
+#### Additional Specific Feature
+* During the Bulk Document creation, according to the attributes the structure of document is present in the view.
+* The structure of document can also be copied by using the `Copy Document Format` Button.
 ## 🧰 Tech Stack
 
 - [Appwrite](https://appwrite.io/)
@@ -26,26 +21,32 @@ This makes server-side rendering work, but now client-side rendering is broken. 
 ## 🛠️ Setup Server
 
 1. Setup Appwrite server
-2. Create project `almostSsr`
+2. Create your Appwrite project
 
 ## 👀 Setup Client
 
 1. Install libarries `npm install`
-2. Update `AppwriteEndpoint` in `src/lib/AppwriteService.ts`
-3. Start server `npm run dev`
+2. Duplicate `.dup.env` file and rename it to `.env`.
+3. Update the following environment variables in `.env` file:
+    - `PUBLIC_APPWRITE_ENDPOINT` - Appwrite instance endpoint.
+    - `PUBLIC_APPWRITE_PROJECT` - Project ID of your Appwrite project
+    - `PUBLIC_APPWRITE_KEY` - Generate a Key from Appwrite console and provide all permissions.
+## 🚀 Run Locally
 
-## 🚀 Deployment
-
-1. Deploy the frontend on your production domain. For example, `myapp.com`.
-2. Add the frontend domain as a trusted platform in your Appwrite project.
-3. Add a custom domain to your Appwrite project, which is a subdomain of your frontend. For example, `appwrite.myapp.com`.
-4. Update `SsrHostname` and `AppwriteHostname` in `src/lib/AppwriteService.ts` with proper domains.
+1. Run `npm run dev`.
+2. By default the application will run on [`http://localhost:5173/`](http://localhost:5173/).
 
 ## 🤝 Contributing
 
-To contribute to frontend, make sure to use the [Pink Design](https://pink.appwrite.io/) design system. Ensure both dark and light theme work properly, as well as responsivity on mobile, tablet and desktop.
+* Raise a new issue.
+* Code contribution:
+    * Fork the Repo
+    * Create a new branch as `fix-issue-description`
+    * Raise the PR.
 
-When contributing with static files, ensure all images are in WEBP or SVG format.
+## 📖 References
+* [Pink Design](https://pink.appwrite.io/)
+* [SvelteKit Appwrite Starter](https://github.com/Meldiron/appwrite-ssr-svelte-kit/tree/main)
 
 ## 🖼️ Screenshots
 
@@ -90,4 +91,4 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment. No Adapter is installed and is ment to run locally.

@@ -67,7 +67,7 @@
 
 	<div class="container">
     
-    <h3 class="heading-level-3">File structure should be following</h3>
+    <h3 class="heading-level-3">File structure for Document should be following</h3>
     <section class="u-min-width-100-percent">
       <code class="code-panel-content grid-code">
         {#each data.attributeFormat as attributeFomat}
@@ -80,7 +80,7 @@
     <br>
     <button class="button is-secondary" aria-label="Add new item" on:click={copyAttributeFormatToClipboard}>
       <span class="icon-duplicate" aria-hidden="true"></span>
-      <span class="text">Copy Collection Format</span>
+      <span class="text">Copy Document Format</span>
     </button>
     <br>
     

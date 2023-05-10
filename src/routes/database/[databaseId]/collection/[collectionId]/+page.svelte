@@ -95,7 +95,7 @@
         <button class="button is-big u-margin-inline-start-16">
           <span class="icon-trash" aria-hidden="true"></span>
           <span class="text" on:click={() => 
-          location.href = `/database/${data.databaseId}/collection/${data.collectionId}/new`}>
+          location.href = `/database/${data.databaseId}/collection/${data.collectionId}/newDocument`}>
             Bulk Create Documents</span>
         </button>
   </div>
