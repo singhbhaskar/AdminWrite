@@ -12,7 +12,19 @@
 
 	let modalMessage = '';
 	let modalType = '';
+  let showAlert = false;
 	const dialog: any = browser ? document.getElementById('dialog') : null;
+
+  async function handleCopy(event: any) {
+    console.log(event.srcElement.dataset.docid);
+    const clipBoard = navigator.clipboard;
+    clipBoard.writeText(event.srcElement.dataset.docid).then(() => {
+      showAlert = true;
+      setTimeout(() => {
+        showAlert = false;
+      }, 500)
+    });
+  }
 
   async function deleteSelectedDocuments() {
 		const selectedDocuments = document.body.getElementsByClassName("document-check");
@@ -115,9 +127,9 @@
                   <input class="document-check" id="{document.$id}" type="checkbox" />
                 </td>
                 <td class="table-col" data-title="Document ID">
-                  <button class="tag">
-                    <span class="icon-duplicate" aria-hidden="true"></span>
-                    <span class="text">{document.$id}</span>
+                  <button class="tag" data-docId="{document.$id}" on:click={handleCopy}>
+                    <span class="icon-duplicate" data-docId="{document.$id}" aria-hidden="true"></span>
+                    <span class="text" data-docId="{document.$id}">{document.$id}</span>
                   </button>
                 </td>
                 {#each data.attributes as attribute}
@@ -188,4 +200,27 @@
       </form>
     </dialog>
   </div>
+
+
+  {#if showAlert}
+  <section class="alert-sticky is-success u-z-index-10 u-position-absolute" style="right: 0px;"   id="clipboard-alert">
+    <button
+      class="button is-text is-only-icon"
+      style="--button-size:1.5rem;"
+      aria-label="close alert"
+      on:click={() => {
+        showAlert = false;
+      }}
+    >
+      <span class="icon-x" aria-hidden="true"></span>
+    </button>
+    <div class="alert-sticky-image">
+      <span class="icon-info" aria-hidden="true"></span>
+    </div>
+    <div class="alert-sticky-content">
+      <h4 class="alert-sticky-title">Copied to clipboard</h4>
+    </div>
+  </section>
+{/if}
+
 </main>

@@ -8,9 +8,19 @@ export const load = (async ({ params, depends }) => {
 	const attributes = await ProjDatabases.listAttributes(databaseId, collectionId);
 	let attributeFormat = ['[\n\t{'];
 	attributes.attributes.forEach((attr) => {
-		attributeFormat.push(
-			attr.array? '\t\t'+`"${attr.key}": [${attr.type}],`:'\t\t'+`"${attr.key}": ${attr.type},`
-		);
+		if (attr.array) {
+			attributeFormat.push(
+				attributes.attributes.indexOf(attr) == attributes.attributes.length-1? 
+				'\t\t'+`"${attr.key}": [${attr.type}]`:
+					'\t\t'+`"${attr.key}": [${attr.type}],`
+			);
+		} else {
+			attributeFormat.push(
+				attributes.attributes.indexOf(attr) == attributes.attributes.length-1? 
+				'\t\t'+`"${attr.key}": ${attr.type}`:
+					'\t\t'+`"${attr.key}": ${attr.type},`
+			);
+		}
 	})
 	attributeFormat.push('\t}\n]')
 	return {
